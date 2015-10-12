@@ -23,20 +23,104 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />
-        <title>Hello World!</title>
+        <title>Scan Blueeotoths</title>
+        <style type="text/css">
+            .ready{
+                width: 100%;
+            }
+        </style>
     </head>
-    <body>
+    <body onload="onLoad">
         <div class="app">
-            <h1>Apache Cordova</h1>
+            <h1 id="appTitle">Apache Cordova - Blue Tooth Enabled!</h1>
             <div id="deviceready" class="blink">
                 <p class="event listening">Connecting to Device</p>
                 <p class="event received">Device is Ready</p>
             </div>
+            <div id="documentready" class="ready">
+                <div id="readWeightsDiv">Read Weights ...</div>
+                <input type="text" id="readyTextbox" value="" />
+                <input type="submit" id="startBleBtn" value="Start Ble Process" onClick='runBle();' />
+                <input type="submit" id="stopBleBtn" value="Change Tare / Baseline" onClick='changeBleBaseline();' />
+                <input type="submit" id="stopBleBtn" value="Stop Ble" onClick='stopBle();' />
+            </div>
         </div>
         <script type="text/javascript" src="cordova.js"></script>
         <script type="text/javascript" src="js/index.js"></script>
+        <script src="js/blueToothDevices.js"></script>        
         <script type="text/javascript">
             app.initialize();
-        </script>
+            var isDebug = true;
+            var baseline =  4786000;
+            var devices = [];
+            
+            function runBle() {
+                alert('Starting Ble: ' + baseline);
+                //BlueToothDevices.RunBle(baseline, isDebug);
+                //BlueToothDevices.StartScan(baseline, isDebug, BlueToothDevices.onDeviceScan);
+                Bluetooth.StartScan(baseline, onShowWeights, isDebug);
+                //console.log(JSON.stringify(Bluetooth));
+                //console.log(Bluetooth.changeDebug(88));
+                //console.log(Bluetooth.changeTare(88));
+            }
+            
+            function stopBle() {
+                alert('Stopping Ble ...');
+                Bluetooth.StopScan(isDebug);
+            }
+            
+            function changeBleBaseline() {
+                if(document.getElementById('readyTextbox').value.length > 0)
+                {
+                    alert('Changing Ble ,,,');
+                    baseline = parseInt(document.getElementById('readyTextbox').value);
+                    Bluetooth.ChangeTare(baseline);
+                }
+            }
+            
+            /**
+            function onDeviceScan(device) {
+                alert('BLE device was found ');
+                BlueToothDevices.Debug('onDeviceScan > ' + JSON.stringify(device) , isDebug);
+                BlueToothDevices.AddDevice(device, isDebug);
+                var devices = BlueToothDevices.ListDevices();
+                
+                if(devices !== undefined && devices.length > 0)
+                {
+                    BlueToothDevices.Debug('Listing devices > ' + JSON.stringify(devices) , isDebug);
+                }
+                
+                BlueToothDevices.ConnectDevices(devices, baseline, isDebug,  onConnectDevice);
+            }
+            
+             function onConnectDevice(device) {
+                BlueToothDevices.Read(device.device_id, device.service_uuid, device.characteristic_uuid, device.baseline, device.isDebug, oReadDevice);
+            }
+            
+            function oReadDevice(device) {
+                BlueToothDevices.Debug('onReadDevice > ' + JSON.stringify(device), isDebug);
+                BlueToothDevices.ProcessResult(device.result, device.baseline, isDebug, 100, onReadWeights);
+            }
+            
+            function onReadWeights(weights) {
+                BlueToothDevices.Debug('onReadWeights > ' + JSON.stringify(weights), isDebug);
+                var readWeightsDiv = document.getElementById('appTitle');
+                var weight = weights[0];
+                readWeightsDiv.innerHTML = weight.average_weight + ' | ' + weight.total_reads + ' | ' + weight.total_weight  + ' | ' + weight.baseline; 
+            }
+            */
+            function onShowWeights(weights, baseline, isDebug) {
+                var readWeightsDiv = document.getElementById('appTitle');
+                var weight = weights[0];
+                readWeightsDiv.innerHTML = weight.average_weight + ' | ' + weight.total_reads + ' | ' + weight.total_weight  + ' | ' + weight.baseline; 
+            }
+            function onLoad() {
+                document.addEventListener("deviceready", onDeviceReady, isDebug);
+            }
+            
+            function onDeviceReady() {
+                alert('my device is loaded and ready');
+            }
+        </script>   
     </body>
 </html>

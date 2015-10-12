@@ -34,6 +34,42 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
+        /**
+        BlueToothDevices.ChangeBaseline(111111)
+        BlueToothDevices.Debug(BlueToothDevices.ReadBaseline(), true);
+        
+        BlueToothDevices.ChangeBaseline(4786763);
+        BlueToothDevices.Debug(BlueToothDevices.ReadBaseline(), true);
+        
+        BlueToothDevices.Debug(BlueToothDevices._baseline(), true);
+        **/
+        
+        /**
+        BlueToothDevices.RunBle(4787582, true);
+         BlueToothDevices.StartScan(4787582, true);        
+         setInterval(function(){            
+        },10000);
+        **/
+        
+        /**
+        alert("before scan");
+        
+        if(ble){            
+            alert("plugin initialized!");           
+        } else {
+           alert("plugin not initialized!");
+        }  
+        **/
+           //BlueToothDevices.RunBle(4783280, true);
+        /**
+        ble.startScan([], function(device) {                               
+                               
+                    alert(JSON.stringify(device));                            
+                }, function() { 
+                    alert("failed to start scan"); 
+                });
+        **/
+        
         navigator.splashscreen.hide();
     },
     // Update DOM on a Received Event
