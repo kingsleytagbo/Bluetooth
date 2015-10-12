@@ -168,7 +168,7 @@ var BlueToothDevices = {
     StartScan:function(baseline, isDebug, callback1, callback2)
     {
             try{
-                BlueToothDevices.Debug("Before scanning for ble devices", isDebug); 
+                 BlueToothDevices.Debug("Before scanning for ble devices" + JSON.stringify({baseline: baseline, isDebug: isDebug, f1: callback1.name ,f2: callback2.name}), isDebug); 
                 
                 BlueToothDevices.ChangeBaseline(baseline);
                     
@@ -392,6 +392,7 @@ var BlueToothDevices = {
     },
     Debug: function(message, isDebug)
     {
+        //alert(JSON.stringify({Message: message, IsDebug: isDebug}));
         if(isDebug === undefined || isDebug === null) 
         {
             isDebug = false;
@@ -408,7 +409,7 @@ var BlueToothDevices = {
     }
 ,onDeviceScan: function onDeviceScan(device, baseline, isDebug) {
                 BlueToothDevices.Debug('BlueToothDevices.onDeviceScan > ' + JSON.stringify({baseline: baseline, debug: isDebug} ) , isDebug);
-    
+                
                 BlueToothDevices.AddDevice(device, isDebug);
         
                 var devices = BlueToothDevices.ListDevices();

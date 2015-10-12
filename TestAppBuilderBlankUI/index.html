@@ -55,10 +55,11 @@
             var devices = [];
             
             function runBle() {
-                alert('Starting Ble: ' + baseline);
+                alert('Starting Scan Ble: ' + baseline);
+                Bluetooth.StartScan(baseline, onShowWeights, isDebug);
                 //BlueToothDevices.RunBle(baseline, isDebug);
                 //BlueToothDevices.StartScan(baseline, isDebug, BlueToothDevices.onDeviceScan);
-                Bluetooth.StartScan(baseline, onShowWeights, isDebug);
+                //Bluetooth.StartScan(baseline, onShowWeights, isDebug);
                 //console.log(JSON.stringify(Bluetooth));
                 //console.log(Bluetooth.changeDebug(88));
                 //console.log(Bluetooth.changeTare(88));
